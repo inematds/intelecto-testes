@@ -196,3 +196,28 @@ Neste caso, ajuste `EVOLUTION_API_URL` no `.env` para apontar para a URL acessí
 - A Evolution API persiste instâncias nos volumes Docker (`evolution_instances`, `evolution_store`)
 - Se os volumes forem removidos, é necessário recriar a instância e escanear o QR Code novamente
 - O webhook será reconfigurado automaticamente pelo Intelecto
+
+## Guia Rápido
+
+```bash
+# 1. Clonar e configurar
+git clone git@github.com:inematds/intelecto-testes.git
+cd intelecto-testes
+cp .env.example .env
+# Edite o .env com suas chaves
+
+# 2. Subir os containers
+docker compose up --build -d
+
+# 3. Acessar o painel da Evolution API
+# Abra http://localhost:8085 no navegador
+# Crie a instância com o nome "intelecto"
+# Escaneie o QR Code no WhatsApp (Configurações > Aparelhos conectados)
+
+# 4. Pronto! Mande uma mensagem no WhatsApp e o bot responde.
+
+# Comandos úteis:
+docker compose logs -f intelecto   # Ver logs
+docker compose restart intelecto   # Reiniciar após trocar .env
+docker compose down                # Parar tudo
+```
