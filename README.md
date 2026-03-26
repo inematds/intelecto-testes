@@ -265,3 +265,69 @@ git --version
    ```
 
 Após instalar os pré-requisitos, siga o [Guia Rápido](#guia-rápido) acima.
+
+## Usando Ollama (LLM local) — Futuro
+
+O Intelecto está preparado para suportar o [Ollama](https://ollama.com/) como provedor de LLM local, rodando modelos diretamente na sua máquina sem depender de APIs externas.
+
+### Requisitos de hardware
+
+| Modelo | RAM mínima | GPU (opcional) | Observação |
+|--------|-----------|----------------|------------|
+| 7B (ex: llama3.1:8b) | 8 GB | 4 GB VRAM | Bom para testes |
+| 13B | 16 GB | 8 GB VRAM | Equilíbrio qualidade/velocidade |
+| 70B | 64 GB | 24+ GB VRAM | Melhor qualidade, exige hardware potente |
+
+Com GPU NVIDIA a inferência é significativamente mais rápida. Sem GPU, roda na CPU (mais lento).
+
+### Como vai funcionar
+
+1. Adicionar o Ollama no `docker-compose.yml`:
+
+```yaml
+ollama:
+  image: ollama/ollama
+  ports:
+    - "11434:11434"
+  volumes:
+    - ollama_data:/root/.ollama
+  # Para usar GPU NVIDIA, descomente:
+  # deploy:
+  #   resources:
+  #     reservations:
+  #       devices:
+  #         - driver: nvidia
+  #           count: all
+  #           capabilities: [gpu]
+```
+
+2. Baixar um modelo:
+
+```bash
+docker compose exec ollama ollama pull llama3.1:8b
+```
+
+3. Configurar no `.env`:
+
+```env
+LLM_PROVIDER=ollama
+OLLAMA_URL=http://ollama:11434
+OLLAMA_MODEL=llama3.1:8b
+```
+
+4. Reiniciar o Intelecto:
+
+```bash
+docker compose up --build -d
+```
+
+### Diferenças entre OpenRouter e Ollama
+
+| | OpenRouter | Ollama |
+|---|-----------|--------|
+| **Onde roda** | Nuvem (API externa) | Local (sua máquina) |
+| **Custo** | Gratuito (limitado) ou pago | Gratuito (sem limites) |
+| **Privacidade** | Dados passam por terceiros | Tudo local |
+| **Velocidade** | Depende da internet | Depende do hardware |
+| **Modelos** | Centenas disponíveis | Precisa baixar cada um |
+| **Setup** | Só precisa de API key | Precisa de hardware adequado |
