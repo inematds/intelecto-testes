@@ -221,3 +221,47 @@ docker compose logs -f intelecto   # Ver logs
 docker compose restart intelecto   # Reiniciar após trocar .env
 docker compose down                # Parar tudo
 ```
+
+## Pré-requisitos por sistema operacional
+
+### Linux (Ubuntu/Debian)
+
+```bash
+# Atualizar pacotes
+sudo apt update
+
+# Instalar Docker
+sudo apt install -y docker.io docker-compose-v2
+
+# Adicionar seu usuário ao grupo docker (evita usar sudo)
+sudo usermod -aG docker $USER
+# Faça logout e login novamente para aplicar
+
+# Instalar Git
+sudo apt install -y git
+
+# Verificar instalação
+docker --version
+docker compose version
+git --version
+```
+
+### Windows
+
+1. **Docker Desktop** — Baixe e instale em [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+   - Durante a instalação, habilite o **WSL 2** quando solicitado
+   - Após instalar, abra o Docker Desktop e aguarde ele iniciar
+
+2. **Git** — Baixe e instale em [git-scm.com](https://git-scm.com/)
+   - Na instalação, mantenha as opções padrão
+
+3. **Terminal** — Use o **Git Bash** (instalado junto com o Git) ou o **PowerShell**
+
+4. **Verificar instalação** — Abra o terminal e rode:
+   ```bash
+   docker --version
+   docker compose version
+   git --version
+   ```
+
+Após instalar os pré-requisitos, siga o [Guia Rápido](#guia-rápido) acima.
