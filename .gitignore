@@ -1,0 +1,8 @@
+.env
+data/memory.db
+data/lid_map.json
+data/documents/*
+!data/documents/.gitkeep
+__pycache__/
+*.pyc
+.venv/

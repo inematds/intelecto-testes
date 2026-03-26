@@ -1,0 +1,33 @@
+services:
+  intelecto:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./soul.md:/app/soul.md:ro
+    depends_on:
+      evolution-api:
+        condition: service_started
+    restart: unless-stopped
+
+  evolution-api:
+    image: atendai/evolution-api:v1.8.0
+    ports:
+      - "8085:8080"
+    environment:
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY}
+      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+      - QRCODE_LIMIT=30
+      - CONFIG_SESSION_PHONE_CLIENT=Intelecto
+      - LOG_LEVEL=DARK
+    volumes:
+      - evolution_instances:/evolution/instances
+      - evolution_store:/evolution/store
+    restart: unless-stopped
+
+volumes:
+  evolution_instances:
+  evolution_store:
